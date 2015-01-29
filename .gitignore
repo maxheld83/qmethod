@@ -2,3 +2,9 @@ gitHeadInfo.gin
 R/.DS_Store
 R/.Rapp.history
 inst/.DS_Store
+inst/distrotemplates/Output/
+inst/distrotemplates/a4-concordance.tex
+inst/distrotemplates/a4.log
+inst/distrotemplates/a4.pdf
+inst/distrotemplates/a4.synctex.gz
+inst/distrotemplates/a4.tex
