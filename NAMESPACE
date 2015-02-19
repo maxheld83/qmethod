@@ -4,7 +4,8 @@ import("methods",
        "digest",
        "tools",
        "xtable",
-       "knitr")
+       "knitr",
+       "RColorBrewer")
 export("qmethod",
        "qzscores",
        "qflag",
@@ -18,7 +19,8 @@ export("qmethod",
        "make.cards",
        "export.qm",
        "make.cards",
-       "make.distribution")
+       "make.distribution",
+       "array.viz")
 S3method("plot",
          "QmethodRes")
 S3method("summary",
