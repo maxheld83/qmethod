@@ -13,9 +13,11 @@ Description: Analysis of Q methodology data to identify the distinct perspective
   The package also offers functions to print Q cards and to generate Q distributions for convenient study administration.
   The package uses principal components and it offers the following choices: manual or automatic flagging, a number of mathematical methods for rotation, and a number of correlation coefficients for the initial correlation matrix.
 License: GPL (>= 2)
+Depends:
+  ggplot2,
+  psych
 Imports:
   methods,
-  psych,
   GPArotation,
   tools,
   digest,
@@ -23,7 +25,6 @@ Imports:
   xtable,
   RColorBrewer,
   stringr,
-  ggplot2,
   plyr,
   reshape2
 LazyData: true
