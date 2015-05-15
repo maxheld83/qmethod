@@ -5,5 +5,4 @@ warnings_are_errors: false
 
 sudo: required
 
-r_check_args:
-- --as-cran
+r_check_args: --no-examples
