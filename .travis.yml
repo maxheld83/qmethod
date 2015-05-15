@@ -5,8 +5,4 @@ warnings_are_errors: false
 
 sudo: required
 
-r_check_args: --as-cran
-
-# install these packages directly from github, maybe to avoid https://github.com/aiorazabala/qmethod/issues/123
-r_github_packages:
-- hadley/stringr
+r_check_args: --no-examples
