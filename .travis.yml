@@ -1,1 +1,4 @@
 language: r
+
+# Don't fail just for warnings (though these need to be fixed for CRAN)
+warnings_are_errors: FALSE
