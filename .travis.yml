@@ -7,3 +7,4 @@ sudo: required
 
 r_check_args:
 - --no-manual
+- --no-examples
