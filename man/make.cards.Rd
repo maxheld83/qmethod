@@ -6,16 +6,17 @@
   Full item wordings are printed on the front of business cards and item IDs on the back.
 }
 \usage{
-make.cards(
-  	 q.set,
+  make.cards(
+    q.set,
     study.language = NULL,
     paper.format = "AveryZweckformC32010.Rnw",
     output.pdf = TRUE,
     manual.lookup = NULL,
     wording.font.size = NULL,
     file.name = "QCards",
-    babel.language = NULL
-    )
+    babel.language = NULL,
+    show.handles = FALSE
+  )
 }
 
 \arguments{
@@ -30,7 +31,7 @@ make.cards(
   \item{paper.format}{
   	A character vector of length 1, choosing among available templates of business card sheets.
   	Defaults to the only currently available \code{"AveryZweckformC32010.Rnw"}.
-    Must include file extension of template.
+    Must include file extension of the template.
   }
   \item{output.pdf}{
   	Logical.
@@ -39,13 +40,16 @@ make.cards(
   	Defaults to \code{TRUE}.
   }
   \item{manual.lookup}{
-  	A matrix with (meaningful, short) handles (same as in \code{\link{build.q.set}}, \code{\link{import.q.concourse}}) as rownames, and arbitary, unique identifying strings in any of the columns as also expected in \code{\link{import.q.sorts}} and \code{\link{import.q.feedback}}.
+  	A matrix with handles (same as in \code{\link{build.q.set}}, \code{\link{import.q.concourse}}) as row names, \code{study.language} as columns and arbitrary, \emph{unique} identifying strings in the cells, as also expected in \code{\link{import.q.sorts}} and \code{\link{import.q.feedback}}.
+    If \code{study.language} is set to \code{NULL} (default), the first column in the provided matrix will be used.
+    Notice that \code{manual.lookup} must always be a matrix, even if it has only one column.
+
 		Defaults to \code{NULL} in which case items are automatically identified by full item hashes, as also detected by \code{\link{import.q.sorts}} and \code{\link{import.q.feedback}}.
   }
   \item{wording.font.size}{
     A character vector of length 1 to set the font size of the full item wording on the cards.
     Defaults to \code{NULL} in which case the default font size 12pt is used.
-    Only \href{http://en.wikibooks.org/wiki/LaTeX/Fonts#Sizing_text}{standard LaTeX font sizes} are allowed, from \code{\\tiny} to \code{\\Huge}.
+    Only \href{http://en.wikibooks.org/wiki/LaTeX/Fonts#Sizing_text}{standard LaTeX font sizes} are allowed, from \code{"\\tiny"} to \code{"\\Huge"}.
   }
   \item{file.name}{
     A character vector of length 1 to set the filename \emph{without file extension}.
@@ -57,6 +61,11 @@ make.cards(
     Defaults to \code{NULL}, in which case babel is never called.
     Changing \code{babel.language} between function calls can occasionally leave inconsistent LaTeX temp files, which may trip up compilation.
     Please re-run the function once again or clean up temp files (in the working directory) in that case.
+  }
+  \item{show.handles}{
+    Logical.
+    If \code{TRUE}, meaningful \emph{handles} are used instead of \emph{IDs}, as may be useful for researcher-facing card sets.
+    Defaults to \code{FALSE}, in which case the participant-facing \emph{IDs} are used (as per \code{manual.lookup}).
   }
 }
 \details{
@@ -71,12 +80,12 @@ make.cards(
 	If templates are duplex printed with the same page on the front and back, and in proper orientation, the front of each card includes the full wording, and the back its unique identifier (ID).
 
 	Identifiers (ID) entered manually or automatically hashed from full wordings are also expected in the import functions \code{\link{import.q.sorts}} and \code{\link{import.q.feedback}}.
-  The automatic summary of full item wordings, technically known as \emph{hashing}, proceeds internally by passing the full item wording to the \code{\link[digest]{digest}} function of the package \pkg{digest} (with arguments set to 
-  
+  The automatic summary of full item wordings, technically known as \emph{hashing}, proceeds internally by passing the full item wording to the \code{\link[digest]{digest}} function of the package \pkg{digest} (with arguments set to
+
   \code{algo = crc32, serialize = FALSE}.)
 
 	The function proceeds internally by preparing a dataframe with full item wordings and identifiers (ID), and then invokes a prepared \code{*.RNW} template included with this package, which in turn includes a \pkg{knitr} chunk, which in turn calls \pkg{xtable} to return a neatly layed-out multi-page table.
-  
+
   If you are not familiar with the terminology of item \emph{handle}, \emph{ID} and \emph{wording} or the file structure expected for import functions, please read the respective sections in the documentation for \link{qmethod-package} first or consider the package \href{https://github.com/aiorazabala/qmethod/wiki/Data-management}{wiki}
 }
 

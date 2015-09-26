@@ -1,15 +1,30 @@
 import("methods",
-       "psych",
        "GPArotation",
-       "tools",
-       "xtable",
-       "knitr",
        "ggplot2",
-       "stringr")
+       "tools",
+       "stringr",
+       "paran",
+       "nFactors"
+       )
 importFrom("plyr","count")
+importFrom("plyr","join_all")
 importFrom("reshape2","melt")
 importFrom("digest", "digest")
+importFrom("koRpus", "hyphen")
+importFrom("knitr", "knit")
+importFrom("knitr", "knit2pdf")
+importFrom("xtable", "xtable")
+importFrom("xtable", "print.xtable")
 importFrom("RColorBrewer", "brewer.pal")
+importFrom("psych", "principal")
+importFrom("psych", "target.rot")
+importFrom("psych", "Promax")
+importFrom("grid", "grid.newpage")
+importFrom("grid", "grid.draw")
+importFrom("gridExtra", "grid.arrange")
+importFrom("gridExtra", "arrangeGrob")
+importFrom("devtools", "install_version")
+importFrom("devtools", "dev_mode")
 export("qmethod",
        "qzscores",
        "qflag",
@@ -25,12 +40,21 @@ export("qmethod",
        "make.cards",
        "export.qm",
        "make.distribution",
-       "array.viz",
-       "pop.sd")
+       "q.scoreplot",
+       "pop.sd",
+       "qfwe",
+       "q.item.sd",
+       "q.fcolors",
+       "q.nfactors",
+       "q.corrplot",
+       "q.loaplot",
+       "q.compplot",
+       "q.rotplot",
+       "q.mrot.do",
+       "q.mrot.choose")
 S3method("plot",
          "QmethodRes")
 S3method("summary",
          "QmethodRes")
 S3method("print",
          "QmethodRes")
-
