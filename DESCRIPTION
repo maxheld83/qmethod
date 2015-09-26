@@ -15,7 +15,6 @@ Imports:
   ggplot2,
   psych,
   methods,
-  psych,
   GPArotation,
   tools,
   digest,
