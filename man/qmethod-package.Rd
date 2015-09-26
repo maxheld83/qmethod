@@ -22,7 +22,7 @@
     \item \emph{Administration} of a Q study, including:
     \itemize{
       \item generating printable cards for a Q study (\code{\link{make.cards}})
-      \item calculating an appropriate Q-distribution
+      \item calculating an appropriate Q-distribution (\code{\link{make.distribution}})
       %TODO(maxheld83) add here: (\code{\link{make.distribution}})
     }
     \item \emph{Importing} data from other software and raw files, including:
@@ -43,7 +43,7 @@
       \item Correlation matrix heatmaps (\code{\link{q.corrplot}})
       \item Loadings plots (\code{\link{q.loaplot}})
     }
-    \item Calculating the dispersion of items \emph{within} factors.
+    \item Calculating the dispersion of items \emph{within} factors (\code{\link{q.item.sd}}).
     \item Naming (\code{\link{q.fnames}}) and coloring (\code{\link{q.fcolors}}) factors in results and plots for easier interpretation.
     \item Export a plain-text report of the analysis for interpretation in two flavours (\code{\link{export.qm}}).
     \item Generic methods to \code{\link{print.QmethodRes}} and \code{\link{plot.QmethodRes}} Q method results.
@@ -58,7 +58,7 @@
     \enumerate{
       \item Item \strong{full wording}, is the complete item, such as:
 
-      "\samp{One small community of indomitable Q-methodologists ...}".
+        "\samp{One small community of indomitable Q-methodologists ...}".
         This item can be read in from individual *.TEX files by using \code{\link{import.q.concourse}}.
         The wording is not passed on to any other function, but can be readily retrieved from the object returned from \code{\link{import.q.concourse}}.
       \item The item \strong{handle} is a shorthand way of referring to an item, which should be \emph{meaningful} to the researcher (e.g. \code{"life-with-q"}).
