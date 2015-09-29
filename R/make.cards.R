@@ -1,5 +1,15 @@
-make.cards <- function(q.set, study.language=NULL, paper.format = "AveryZweckformC32010.Rnw", output.pdf = TRUE, manual.lookup = NULL, wording.font.size = NULL, file.name = "QCards", babel.language=NULL, show.handles=FALSE) {
-
+make.cards <- function(
+  q.set,
+  study.language = NULL,
+  paper.format = "AveryZweckformC32010.Rnw",
+  img.dir = NULL,
+  output.pdf = TRUE,
+  manual.lookup = NULL,
+  wording.font.size = NULL,
+  file.name = "QCards",
+  babel.language = NULL,
+  show.handles = FALSE
+) {
   # Input validation also check more below
   if (!is.matrix(q.set)) {
     stop("The q.set specified is not a matrix.")
@@ -21,6 +31,7 @@ make.cards <- function(q.set, study.language=NULL, paper.format = "AveryZweckfor
   if (!paper.format %in% available.formats) {
     stop("The paper.format specified is not available.")
   }
+  #TODO(maxheld83) add img.dir validation here
   if (!is.logical(output.pdf)) {
     stop("The argument output.pdf has not been specified logically.")
   }
@@ -39,11 +50,13 @@ make.cards <- function(q.set, study.language=NULL, paper.format = "AveryZweckfor
   if (!is.null(babel.language) & !is.character((babel.language))) {  # if filename not character
     stop("The specified babel language is invalid.")
   }
+
   # Read in items =============================================================
   q.set.print <- as.data.frame( #  read in complete q.set, all translations
     x = q.set[,study.language]
   )
   colnames(q.set.print) <- "full wording"
+
   # Create lookup table (same as in import.q.feedback and import.q.sorts!)=====
   if (is.null(manual.lookup)) {  # in case there is no manual lookup
     lookup.table <- apply(  # replace every language field with its hash
@@ -68,22 +81,26 @@ make.cards <- function(q.set, study.language=NULL, paper.format = "AveryZweckfor
   }
 
   # Add ids to q.set.print ====================================================
-  q.set.print$id <- NA  # set up empty id
-  for (handle in rownames(q.set.print)) {  # loop over all ids in q.set
-    if (show.handles) {  # this is for the researcher-facing variant
-      q.set.print[handle, "id"] <- handle
-    } else {
-      q.set.print[handle,"id"] <- lookup.table[handle, study.language]
+  if (img.dir == NULL) {  # this is for text cards
+    q.set.print$id <- NA  # set up empty id
+    for (handle in rownames(q.set.print)) {  # loop over all ids in q.set
+      if (show.handles) {  # this is for the researcher-facing variant
+        q.set.print[handle, "id"] <- handle
+      } else {
+        q.set.print[handle,"id"] <- lookup.table[handle, study.language]
+      }
     }
+    path <- paste(  # assign path to template
+      path.package("qmethod"),  # where is the package?
+      # remember, "inst" is not in path, because stuff from inst get put in root of package!
+      "/cardtemplates/",
+      paper.format,  # hopefully will have more templates in the future
+      sep = ""
+    )
+    wording.font.size <- wording.font.size  # dumb, but otherwise R complains about unused argument
+  } else {
+
   }
-  path <- paste(  # assign path to template
-    path.package("qmethod"),  # where is the package?
-    # remember, "inst" is not in path, because stuff from inst get put in root of package!
-    "/cardtemplates/",
-    paper.format,  # hopefully will have more templates in the future
-    sep = ""
-  )
-  wording.font.size <- wording.font.size  # dumb, but otherwise R complains about unused argument
   if (output.pdf == TRUE) {
     return(
       knit2pdf(
