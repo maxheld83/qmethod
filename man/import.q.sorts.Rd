@@ -26,7 +26,7 @@ import.q.sorts(q.sorts.dir,	q.set, q.distribution = NULL,
 		A matrix with handles as row names, languages (if applicable) in columns, as read in by \code{\link{build.q.set}}.
 	}
 	\item{q.distribution}{
-		The chosen Q distribution as a vector of integers, such as \code{c(1,3,1)}.
+		The chosen Q distribution as a vector of integer \emph{column heights} (or counts), such as \code{c(1,3,1)} for possible scores of \code{-1, 0, 0, 0, 1}.
 		Defaults to \code{NULL} for a free distribution.
 
 		If a \code{q.distribution} \emph{is} specified, all rows below the maximum column height of the distribution are ignored when reading in the *.CSV files.
@@ -48,7 +48,7 @@ import.q.sorts(q.sorts.dir,	q.set, q.distribution = NULL,
 	  If \code{TRUE} (default), the first row in the *.CSV files will be considered as variable names and ignored.
 	  If \code{FALSE}, the first row in the *.CSV files will be considered as the top row in participant's Q-sorts.
 
-	  Notice that in both cases, \emph{columns} in the *.CSV must be ordered from right to left as in the original Q-sorts.
+	  Notice that in both cases, \emph{columns} in the *.CSV must be ordered from left (negative) to right (positive) as in the original Q-sorts.
 	}
 }
 
@@ -117,27 +117,4 @@ If you are not familiar with the terminology of item \emph{handle}, \emph{ID} an
 }
 
 \examples{
-  ## Import a Q sample from a directory of CSVs
-data(importexample)
-path.sorts <- paste(                 # this part is only for the example!
-  path.package("qmethod"),           # just to make sure, use absolute path
-  # import example files are in root/extdata of package:
-  "/extdata/importexample/qsorts/",  # location of sorts
-  sep = ""
-  )
-q.sorts <- import.q.sorts(           # now import the sorts
-  q.sorts.dir = path.sorts,          # add your path here
-  q.set = importexample$q.set,       # as produced by build.q.set
-  q.distribution = c(1,2,1),         # very simple distribution
-  conditions = c("before","after"),  # enter your conditions here, same as in path
-  manual.lookup = matrix(  # ideally empty for automatic hashing,
-                           # or read in from *.CSV file
-    c("i01","i02","i03","i04"),
-    ncol = 1,
-    nrow = 4,
-    dimnames = list(c("r-dominance","q-uprising","small-village",
-                      "life-with-q"),"ID")
-    ),
-  header = FALSE                     # example data does not include header
-  )
 }
