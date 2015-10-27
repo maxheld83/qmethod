@@ -96,6 +96,7 @@
 
   If \code{img.dir} is specified for image-based Q studies, the item \emph{file names} are passed on internally as valid LaTeX wrapped in \code{\\includegraphics{}} commands.
   Images are currently \emph{not} read into the workspace by R, but only handled by LaTeX.
+  Images, though not item wording, is horizontally and vertically centered within cells.
 }
 
 \value{
@@ -116,7 +117,7 @@
   Instead, users will have to proceed by trial and error, using a \code{wording.font.size} that works for their longest item.
   The default value should work for most Q items.
 
-	This function currently only works for Avery Zweckform C32010 templates, designed in\cr \code{/cardtemplates/AveryZweckformC32010.Rnw}.
+	This function currently works for Avery Zweckform C32010 templates, designed in\cr \code{/cardtemplates/AveryZweckformC32010.Rnw} as well as simple 13-cm quadratic cards, two on each A4 paper in \cr \code{/cardtemplates/2x1a4.Rnw}.
 	If you would like support for other templates, check out / chip in here: \url{https://github.com/aiorazabala/qmethod/issues/34}.
 }
 
