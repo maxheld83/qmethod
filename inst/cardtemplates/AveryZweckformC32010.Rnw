@@ -10,12 +10,12 @@
 \usepackage[utf8]{inputenc}  % allow accents etc in inputs
 
 <<babel.language, echo=FALSE, results="asis" >>=
-source("setbabel.R")
+source("setbabel.R", local = TRUE)
 setbabel(babel.language = babel.language)
 @
 
 <<images-path, echo=FALSE, results="asis" >>=
-source("setgraphicspath.R")
+source("setgraphicspath.R", local = TRUE)
 setgraphicspath(img.dir = img.dir)
 @
 
