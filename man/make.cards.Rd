@@ -10,6 +10,7 @@
     q.set,
     study.language = NULL,
     paper.format = "AveryZweckformC32010.Rnw",
+    img.dir = NULL,
     output.pdf = TRUE,
     manual.lookup = NULL,
     wording.font.size = NULL,
@@ -30,8 +31,13 @@
   }
   \item{paper.format}{
   	A character vector of length 1, choosing among available templates of business card sheets.
-  	Defaults to the only currently available \code{"AveryZweckformC32010.Rnw"}.
+  	Defaults to \code{"AveryZweckformC32010.Rnw"}.
     Must include file extension of the template.
+  }
+  \item{img.dir}{
+    A directory of images, if item stimuli are images, rather than text.
+    Filenames of images (without extension or path) must be in colums of the matrix supplied to the above argument \code{q.set}.
+    Avoid special characters in filenames.
   }
   \item{output.pdf}{
   	Logical.
@@ -86,7 +92,10 @@
 
 	The function proceeds internally by preparing a dataframe with full item wordings and identifiers (ID), and then invokes a prepared \code{*.RNW} template included with this package, which in turn includes a \pkg{knitr} chunk, which in turn calls \pkg{xtable} to return a neatly layed-out multi-page table.
 
-  If you are not familiar with the terminology of item \emph{handle}, \emph{ID} and \emph{wording} or the file structure expected for import functions, please read the respective sections in the documentation for \link{qmethod-package} first or consider the package \href{https://github.com/aiorazabala/qmethod/wiki/Data-management}{wiki}
+  If you are not familiar with the terminology of item \emph{handle}, \emph{ID} and \emph{wording} or the file structure expected for import functions, please read the respective sections in the documentation for \link{qmethod-package} first or consider the package \href{https://github.com/aiorazabala/qmethod/wiki/Data-management}{wiki}.
+
+  If \code{img.dir} is specified for image-based Q studies, the item \emph{file names} are passed on internally as valid LaTeX wrapped in \code{\\includegraphics{}} commands.
+  Images are currently \emph{not} read into the workspace by R, but only handled by LaTeX.
 }
 
 \value{
@@ -111,7 +120,7 @@
 	If you would like support for other templates, check out / chip in here: \url{https://github.com/aiorazabala/qmethod/issues/34}.
 }
 
-\author{Maximilian Held}
+\author{Maximilian Held, Verena Kasztantowicz}
 
 \seealso{
 	\code{\link{build.q.set}},
