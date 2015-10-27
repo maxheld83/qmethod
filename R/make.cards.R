@@ -60,10 +60,11 @@ make.cards <- function(
   )
   colnames(q.set.print) <- "full wording"
   if (!is.null(img.dir)) {  # the following happens only it there is an img.dir
-    q.set.print$`full wording` <- paste0("\\includegraphics[width=\\linewidth, height=5.5cm, keepaspectratio=true]{", file_path_sans_ext(q.set), "}")
+    q.set.print$`full wording` <- paste0("\\centering", "\\arraybackslash", "\\includegraphics[width=\\linewidth, height=\\textheight, keepaspectratio=true]{", file_path_sans_ext(q.set), "}")
     # notice that latex includegraphics needs:
     #  - paths in quotation marks in case there are spaces in path
     #  - file path WITHOUT image extension
+    #  - this also centers the image cell, which makes sense only for images, so it must be done locally rather than on column type declaration
   }
   # Create lookup table (same as in import.q.feedback and import.q.sorts!)=====
   if (is.null(manual.lookup)) {  # in case there is no manual lookup
