@@ -12,8 +12,10 @@ setbabel(babel.language = babel.language)
 @
 
 <<images-path, echo=FALSE, results="asis" >>=
-source("setgraphicspath.R", local = TRUE)
-setgraphicspath(img.dir = img.dir)
+if(!is.null(img.dir)) {
+  source("setgraphicspath.R", local = TRUE)
+  setgraphicspath(img.dir = img.dir)
+}
 @
 
 \usepackage[

@@ -54,13 +54,27 @@ make.cards <- function(
     stop("The specified babel language is invalid.")
   }
 
+  # Set up row height ==========================================================
+  # This applies only to images!
+  # TODO DEVELOPERS for all future templates, you must add a row height for images here
+  # This is a workaround for latex, because latex cannot (easily) infer row height in \includegraphics
+  # ... so we're just hard coding it here
+  # if you have a better idea reopen https://github.com/aiorazabala/qmethod/issues/322
+  maximgheight <- rowheight <- vmargin <- NULL  # to appease R Cmd Check
+  vmargin <- 4  # measurements are all in mm
+  switch(EXPR = paper.format,
+   "AveryZweckformC32010.Rnw" = {rowheight <- 54},  #
+   "2x2a4.Rnw" = {rowheight <- 130}
+  )
+  maximgheight <- rowheight - vmargin
+
   # Read in items =============================================================
   q.set.print <- as.data.frame( #  read in complete q.set, all translations
     x = q.set[,study.language]
   )
   colnames(q.set.print) <- "full wording"
   if (!is.null(img.dir)) {  # the following happens only it there is an img.dir
-    q.set.print$`full wording` <- paste0("\\centering", "\\arraybackslash", "\\includegraphics[width=\\linewidth, height=\\textheight, keepaspectratio=true]{", file_path_sans_ext(q.set), "}")
+    q.set.print$`full wording` <- paste0("\\centering", "\\arraybackslash", "\\includegraphics[width=\\linewidth, height=", maximgheight, "mm,", "keepaspectratio=true]{", file_path_sans_ext(q.set), "}")
     # notice that latex includegraphics needs:
     #  - paths in quotation marks in case there are spaces in path
     #  - file path WITHOUT image extension

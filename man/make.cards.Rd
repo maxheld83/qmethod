@@ -23,6 +23,7 @@
 \arguments{
   \item{q.set}{
     A matrix with handles as row names ("\code{q-is-great}", for example), languages (if applicable) in columns, as produced by \code{\link{build.q.set}}.
+    If the below \code{img.dir} argument is specified for graphical stimulus, file names of images (without extension or path) must be in columns.
   }
   \item{study.language}{
   	A character vector of length 1.
@@ -95,8 +96,11 @@
   If you are not familiar with the terminology of item \emph{handle}, \emph{ID} and \emph{wording} or the file structure expected for import functions, please read the respective sections in the documentation for \link{qmethod-package} first or consider the package \href{https://github.com/aiorazabala/qmethod/wiki/Data-management}{wiki}.
 
   If \code{img.dir} is specified for image-based Q studies, the item \emph{file names} are passed on internally as valid LaTeX wrapped in \code{\\includegraphics{}} commands.
+  Automatic item identifiers (ID) are based on image file names, not binary image content, and \emph{do not change if the image content changes}.
   Images are currently \emph{not} read into the workspace by R, but only handled by LaTeX.
   Images, though not item wording, is horizontally and vertically centered within cells.
+  Images are scaled to fit into cells.
+  For details, see the source of this function.
 }
 
 \value{
