@@ -16,7 +16,8 @@
     wording.font.size = NULL,
     file.name = "QCards",
     babel.language = NULL,
-    show.handles = FALSE
+    show.handles = FALSE,
+    duplex.double = FALSE
   )
 }
 
@@ -74,6 +75,11 @@
     If \code{TRUE}, meaningful \emph{handles} are used instead of \emph{IDs}, as may be useful for researcher-facing card sets.
     Defaults to \code{FALSE}, in which case the participant-facing \emph{IDs} are used (as per \code{manual.lookup}).
   }
+  \item{duplex.double}{
+    Logical.
+    If \code{TRUE}, \emph{page} is included \emph{twice} in the output to allow duplex printing, where duplex printer driver settings do not allow for such a setting.
+    Defaults to \code{FALSE}, in which case each page is included only \emph{once} (recommended), and printer driver settings have to be used for duplex copying.
+  }
 }
 \details{
 
@@ -85,6 +91,10 @@
 
 	The function prints the full item wording on the \emph{right} column of any page, and the identifier (ID) on the \emph{left} column.
 	If templates are duplex printed with the same page on the front and back, and in proper orientation, the front of each card includes the full wording, and the back its unique identifier (ID).
+	For duplex printing, every page has to be printed \emph{twice}, once on the front, once on the back.
+	It is recommended to use printer driver duplex settings for this copying, where available.
+	Many printer drivers, even if they offer duplex printing, do not allow you to copy the \emph{same} page on front and back.
+	Use \code{duplex.double=TRUE} in this case to create output with duplicate pages.
 
 	Identifiers (ID) entered manually or automatically hashed from full wordings are also expected in the import functions \code{\link{import.q.sorts}} and \code{\link{import.q.feedback}}.
   The automatic summary of full item wordings, technically known as \emph{hashing}, proceeds internally by passing the full item wording to the \code{\link[digest]{digest}} function of the package \pkg{digest} (with arguments set to

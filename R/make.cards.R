@@ -8,7 +8,8 @@ make.cards <- function(
   wording.font.size = NULL,
   file.name = "QCards",
   babel.language = NULL,
-  show.handles = FALSE
+  show.handles = FALSE,
+  duplex.double = FALSE
 ) {
   # Input validation also check more below
   if (!is.matrix(q.set)) {
@@ -53,20 +54,27 @@ make.cards <- function(
   if (!is.null(babel.language) & !is.character((babel.language))) {  # if filename not character
     stop("The specified babel language is invalid.")
   }
+  assert_that(is.flag(duplex.double))
 
-  # Set up row height ==========================================================
-  # This applies only to images!
-  # TODO DEVELOPERS for all future templates, you must add a row height for images here
-  # This is a workaround for latex, because latex cannot (easily) infer row height in \includegraphics
-  # ... so we're just hard coding it here
-  # if you have a better idea reopen https://github.com/aiorazabala/qmethod/issues/322
+  # Set up template-specific data heigh=========================================
+  # TODO DEVELOPERS for all future templates, you must add the below switches
+  # - maximgheight is a workaround for latex, because latex cannot (easily) infer row height in \includegraphics...
+  #   so we're just hard coding it here
+  #  if you have a better idea reopen https://github.com/aiorazabala/qmethod/issues/322
+  # - pagerows is the number of rows per page, necessary for duplex.double
   maximgheight <- rowheight <- vmargin <- NULL  # to appease R Cmd Check
   vmargin <- 4  # measurements are all in mm
   switch(EXPR = paper.format,
-   "AveryZweckformC32010.Rnw" = {rowheight <- 54},  #
-   "2x2a4.Rnw" = {rowheight <- 130}
+    "AveryZweckformC32010.Rnw" = {
+     rowheight <- 54
+     pagerows <- 5
+    },  #
+    "2x1a4.Rnw" = {
+      rowheight <- 130
+      pagerows <- 1
+    }
   )
-  maximgheight <- rowheight - vmargin
+  maximgheight <- rowheight - vmargin  # subtract constant margin, so that images don't completely fill cell (better for cutting)
 
   # Read in items =============================================================
   q.set.print <- as.data.frame( #  read in complete q.set, all translations
@@ -123,6 +131,26 @@ make.cards <- function(
     sep = ""
   )
   wording.font.size <- wording.font.size  # dumb, but otherwise R complains about unused argument
+
+
+  # Duplicate items for easier duplex printing ================================
+  if (duplex.double) {
+
+    # nrow(q.set.print) must be divided by pagerows without remainder, otherwise
+    # add NA for empty slots on last page
+    # without these, the last page would not be duplex-compatible
+    shortfall <- round_any(x = nrow(q.set), accuracy = pagerows, f = ceiling) - nrow(q.set)
+    empty.closing.rows <- matrix(rep(x = NA, shortfall * ncol(q.set.print)), ncol = ncol(q.set.print))
+    colnames(empty.closing.rows) <- colnames(q.set.print)
+    q.set.print <- rbind(q.set.print, empty.closing.rows)
+
+    # replicate entries
+    rep.index <- unlist(lapply(split(c(1:nrow(q.set.print)), rep(1:(nrow(q.set.print)/pagerows), each = pagerows)), rep, 2), use.names = FALSE)
+    q.set.print <- q.set.print[rep.index, ]
+  }
+
+
+  # Make PDF or LaTeX =========================================================
   if (output.pdf == TRUE) {
     return(
       knit2pdf(
