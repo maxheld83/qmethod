@@ -29,7 +29,7 @@ if(!is.null(img.dir)) {
 }
 
 \begin{document}
-\pagestyle{empty}
+\pagestyle{plain}
 
 <<show.handles, echo = FALSE, results = "asis">>=
 if (show.handles) {

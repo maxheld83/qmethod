@@ -31,7 +31,7 @@ if(!is.null(img.dir)) {
   {geometry
 }
 \begin{document}
-\pagestyle{empty}
+\pagestyle{plain}
 \setlength{\tabcolsep}{5mm}  % for margins and "aisle" margin between cards, fix by trial and error
 %\newcolumntype{H}{>{\centering\arraybackslash\HUGE\ttfamily}m}  % need this because font size should be different for ID
 <<show.handles, echo = FALSE, results = "asis">>=
