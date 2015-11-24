@@ -10,18 +10,21 @@
     q.set,
     study.language = NULL,
     paper.format = "AveryZweckformC32010.Rnw",
+    img.dir = NULL,
     output.pdf = TRUE,
     manual.lookup = NULL,
     wording.font.size = NULL,
     file.name = "QCards",
     babel.language = NULL,
-    show.handles = FALSE
+    show.handles = FALSE,
+    duplex.double = FALSE
   )
 }
 
 \arguments{
   \item{q.set}{
     A matrix with handles as row names ("\code{q-is-great}", for example), languages (if applicable) in columns, as produced by \code{\link{build.q.set}}.
+    If the below \code{img.dir} argument is specified for graphical stimulus, file names of images (without extension or path) must be in columns.
   }
   \item{study.language}{
   	A character vector of length 1.
@@ -30,8 +33,13 @@
   }
   \item{paper.format}{
   	A character vector of length 1, choosing among available templates of business card sheets.
-  	Defaults to the only currently available \code{"AveryZweckformC32010.Rnw"}.
+  	Defaults to \code{"AveryZweckformC32010.Rnw"}.
     Must include file extension of the template.
+  }
+  \item{img.dir}{
+    A directory of images, if item stimuli are images, rather than text.
+    Filenames of images (without extension or path) must be in colums of the matrix supplied to the above argument \code{q.set}.
+    Avoid special characters in filenames.
   }
   \item{output.pdf}{
   	Logical.
@@ -67,6 +75,11 @@
     If \code{TRUE}, meaningful \emph{handles} are used instead of \emph{IDs}, as may be useful for researcher-facing card sets.
     Defaults to \code{FALSE}, in which case the participant-facing \emph{IDs} are used (as per \code{manual.lookup}).
   }
+  \item{duplex.double}{
+    Logical.
+    If \code{TRUE}, \emph{page} is included \emph{twice} in the output to allow duplex printing, where duplex printer driver settings do not allow for such a setting.
+    Defaults to \code{FALSE}, in which case each page is included only \emph{once} (recommended), and printer driver settings have to be used for duplex copying.
+  }
 }
 \details{
 
@@ -78,6 +91,10 @@
 
 	The function prints the full item wording on the \emph{right} column of any page, and the identifier (ID) on the \emph{left} column.
 	If templates are duplex printed with the same page on the front and back, and in proper orientation, the front of each card includes the full wording, and the back its unique identifier (ID).
+	For duplex printing, every page has to be printed \emph{twice}, once on the front, once on the back.
+	It is recommended to use printer driver duplex settings for this copying, where available.
+	Many printer drivers, even if they offer duplex printing, do not allow you to copy the \emph{same} page on front and back.
+	Use \code{duplex.double=TRUE} in this case to create output with duplicate pages.
 
 	Identifiers (ID) entered manually or automatically hashed from full wordings are also expected in the import functions \code{\link{import.q.sorts}} and \code{\link{import.q.feedback}}.
   The automatic summary of full item wordings, technically known as \emph{hashing}, proceeds internally by passing the full item wording to the \code{\link[digest]{digest}} function of the package \pkg{digest} (with arguments set to
@@ -86,7 +103,14 @@
 
 	The function proceeds internally by preparing a dataframe with full item wordings and identifiers (ID), and then invokes a prepared \code{*.RNW} template included with this package, which in turn includes a \pkg{knitr} chunk, which in turn calls \pkg{xtable} to return a neatly layed-out multi-page table.
 
-  If you are not familiar with the terminology of item \emph{handle}, \emph{ID} and \emph{wording} or the file structure expected for import functions, please read the respective sections in the documentation for \link{qmethod-package} first or consider the package \href{https://github.com/aiorazabala/qmethod/wiki/Data-management}{wiki}
+  If you are not familiar with the terminology of item \emph{handle}, \emph{ID} and \emph{wording} or the file structure expected for import functions, please read the respective sections in the documentation for \link{qmethod-package} first or consider the package \href{https://github.com/aiorazabala/qmethod/wiki/Data-management}{wiki}.
+
+  If \code{img.dir} is specified for image-based Q studies, the item \emph{file names} are passed on internally as valid LaTeX wrapped in \code{\\includegraphics{}} commands.
+  Automatic item identifiers (ID) are based on image file names, not binary image content, and \emph{do not change if the image content changes}.
+  Images are currently \emph{not} read into the workspace by R, but only handled by LaTeX.
+  Images, though not item wording, is horizontally and vertically centered within cells.
+  Images are scaled to fit into cells.
+  For details, see the source of this function.
 }
 
 \value{
@@ -107,11 +131,11 @@
   Instead, users will have to proceed by trial and error, using a \code{wording.font.size} that works for their longest item.
   The default value should work for most Q items.
 
-	This function currently only works for Avery Zweckform C32010 templates, designed in\cr \code{/cardtemplates/AveryZweckformC32010.Rnw}.
+	This function currently works for Avery Zweckform C32010 templates, designed in\cr \code{/cardtemplates/AveryZweckformC32010.Rnw} as well as simple 13-cm quadratic cards, two on each A4 paper in \cr \code{/cardtemplates/2x1a4.Rnw}.
 	If you would like support for other templates, check out / chip in here: \url{https://github.com/aiorazabala/qmethod/issues/34}.
 }
 
-\author{Maximilian Held}
+\author{Maximilian Held, Verena Kasztantowicz}
 
 \seealso{
 	\code{\link{build.q.set}},

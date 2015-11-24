@@ -9,6 +9,7 @@ import("methods",
        )
 importFrom("plyr","count")
 importFrom("plyr","join_all")
+importFrom("plyr","round_any")
 importFrom("reshape2","melt")
 importFrom("digest", "digest")
 importFrom("koRpus", "hyphen")
@@ -26,6 +27,7 @@ importFrom("gridExtra", "grid.arrange")
 importFrom("gridExtra", "arrangeGrob")
 importFrom("devtools", "install_version")
 importFrom("devtools", "dev_mode")
+importFrom("tikzDevice", "sanitizeTexString")
 export("qmethod",
        "qzscores",
        "qflag",
