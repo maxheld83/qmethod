@@ -1,20 +1,28 @@
 \name{qflag}
 \alias{qflag}
 \title{Q methodology: automatic flagging of Q-sorts}
-\description{Applies the two standard algorithms to pre-flag Q-sorts automatically, for posterior calculation of the statement scores.}
-\usage{qflag(loa, nstat)}
+\description{Applies alternative algorithms to pre-flag Q-sorts automatically, for posterior calculation of the statement scores.}
+\usage{qflag(loa, nstat, threshold, allow.confounded)}
 
 \arguments{
   \item{loa}{a Q-sort factor loading matrix obtained, for example from\cr \code{unclass(\link[psych]{principal}(...)$loadings)}, or from \code{\link{qmethod}(...)$loa}.}
   \item{nstat}{number of statements in the study.}
+  \item{threshold}{
+    Character string to identify one of several criteria to flag Q-sorts:
+    \enumerate{
+      \item{\code{"0.05"} (default) for Q-sorts which factor loading is higher than the threshold for p-value < 0.05, as per van Exel et al (2001: 388)}
+      \item{\code{"0.01"} for Q-sorts which factor loading is higher than the threshold for p-value < 0.01}
+    }
+  }
+  \item{allow.confounded}{
+    Logical.
+    Defaults to \code{FALSE}, in which case for confounded Q-sorts flagged for \emph{more than one factor}, only the factor with the highest square loading for that Q-sort will be flagged, as per van Exel et al (2001: 388).
+    If \code{TRUE}, confounded Q-sorts will be allowed.
+  }
 }
-\details{
-These are the two standard criteria for automatic flagging used in Q method analysis:
-\enumerate{
-\item{Q-sorts which factor loading is higher than the threshold for p-value < 0.05, and}
-\item{Q-sorts which square loading is higher than the sum of square loadings of the same Q-sort in all other factors.}
-}
-Returns a logical matrix with Q-sorts as rows, and factors as columns.
+
+\value{
+  Returns a logical matrix with Q-sorts as rows, and factors as columns.
 }
 
 \references{Brown, S. R., 1980 \emph{Political subjectivity: Applications of Q methodology in political science}, New Haven, CT: Yale University Press.
@@ -25,12 +33,12 @@ See further references on the methodology in \code{\link{qmethod-package}}.}
 
 \note{This is a function used within \code{\link{qmethod}}. Rarely to be used independently.}
 
-\author{Aiora Zabala}
+\author{Aiora Zabala, Maximilian Held}
 
 \examples{
 data(lipset)
 library(psych)
-loa <- as.data.frame(unclass(principal(lipset[[1]], nfactors = 3, 
+loa <- as.data.frame(unclass(principal(lipset[[1]], nfactors = 3,
                                        rotate = "varimax")$loadings))
 flagged <- qflag(loa = loa, nstat = nrow(lipset[[1]]))
 summary(flagged)

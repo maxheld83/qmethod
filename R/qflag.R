@@ -1,24 +1,50 @@
 #flags Q sorts automatically according to the given loadings matrix
-qflag <- function(loa=loa, nstat) {
+qflag <- function(loa=loa, nstat, threshold="0.05", allow.confounded = FALSE) {
+
+  # Input validation ===========================================================
+  thresholds.available <- c(
+    "0.05",  # aka FLAGGING CRITERIA 1) qsorts which factor loading is higher than the threshold for pval >0.95
+    "0.01"  # Q-Sorts which factor loading is higher than the threshold for p-value < 0.05
+  )
+  assert_that(is.string(threshold))
+  assert_that(threshold %in% thresholds.available)
+  assert_that(is.flag(allow.confounded))
+  if(threshold != "0.05" | allow.confounded) {  # warn if things are non-standard
+    message("You have chosen options that are not standard Q methodology.")
+  }
+
   # calculate number of Q sorts and number of statements
   nqsorts <- nrow(loa)
-  #FLAGGING CRITERIA: 
-  # -- 1) qsorts which factor loading is higher than the threshold for pval >0.95, and 
-  # -- 2) qsorts which square loading is higher than the sum of square loadings of the same q-sort in all other factors
-  thold.05 <- 1.96/sqrt(nstat)
-  loa_sq <- loa^2
-  flagged <- data.frame(cbind(1:nqsorts))
-  flagged[,1] <- as.logical(flagged[,1])
-  f <- 1
-  while (f <= ncol(loa)) {
-    n <- 1
-    while (n <= nqsorts) {
-      flagged[n,f] <- loa_sq[n,f] > (rowSums(loa_sq)[[n]]-loa_sq[n,f]) & abs(loa[n,f]) > thold.05
-      n <- n+1
+
+  # implementing threshold
+  thold <- switch(EXPR = threshold,
+    "0.05" = 1.96/sqrt(nstat),  # this is the accepted truncated variant https://en.wikipedia.org/wiki/1.96,
+    "0.01" = 2.58/sqrt(nstat)
+  )
+  flagged <- abs(loa) > thold
+  confounds <- rowSums(flagged) > 1
+
+  # deal with confounded q-sorts (if any)
+  if(any(confounds)) {
+    if(allow.confounded) {  # here: confounding is allowed
+      message(sum(confounds), "/", nqsorts, " Q-sorts are confounded and are flagged on more than one factor.")
+    } else {# here: confounding is disallowed
+      # here comes fka FLAGGING CRITERIA 2) qsorts which square loading is higher than the sum of square loadings of the same q-sort in all other factors
+      highest <- flagged  # take same format as flagged
+      highest[,] <- FALSE  # make them all false, preliminary
+      for (i in 1:nrow(highest)) {
+        highest[i, which.max((loa^2)[i, ])] <- TRUE
+      }
+      flagged <- flagged & highest
+      message(sum(confounds), " confounded Q-sorts were resolved by flagging only on the factor with the highest squared loading for that Q-sort.")
     }
-    f <- f+1
   }
-  names(flagged) <- paste("flag_f",1:ncol(loa), sep="")
-  row.names(flagged) <- row.names(loa)
+
+  # test for noflags
+  noflag <- rowSums(flagged) == 0
+  if(any(noflag)) {
+    warning(sum(noflag), " Q-sorts were not flagged on any factor, and will be excluded from the following analysis.")
+  }
+
   return(flagged)
 }
