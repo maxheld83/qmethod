@@ -1,4 +1,4 @@
-qmethod <- function(dataset, nfactors, rotation="varimax", forced=TRUE, distribution=NULL, cor.method="pearson", reorder = FALSE, quietly = FALSE, ...) {
+qmethod <- function(dataset, nfactors, rotation="varimax", forced=TRUE, distribution=NULL, cor.method="pearson", reorder = FALSE, quietly = FALSE, threshold = "0.05", allow.confounded = FALSE, ...) {
   # calculate number of Q sorts and number of statements
   nstat <- nrow(dataset)
   nqsorts <- ncol(dataset)
@@ -68,7 +68,7 @@ qmethod <- function(dataset, nfactors, rotation="varimax", forced=TRUE, distribu
     colnames(loa) <- paste0("f", 1:ncol(loa))  # this destroys the reordered names, known, unfixable bug: https://github.com/aiorazabala/qmethod/issues/275
   }
   # The following depends on the qmethod functions: qflag, qzscores, qfcharact, qdc
-  flagged <- qflag(loa=loa, nstat=nstat)
+  flagged <- qflag(loa=loa, nstat=nstat, threshold = threshold, allow.confounded = allow.confounded)
   qmethodresults <- qzscores(dataset, nfactors, flagged=flagged, loa=loa, forced=forced, distribution=distribution)
   qmethodresults$brief$rotation <- rotation
   qmethodresults$brief$rotmat <- rot.mat

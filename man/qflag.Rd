@@ -2,7 +2,14 @@
 \alias{qflag}
 \title{Q methodology: automatic flagging of Q-sorts}
 \description{Applies alternative algorithms to pre-flag Q-sorts automatically, for posterior calculation of the statement scores.}
-\usage{qflag(loa, nstat, threshold, allow.confounded)}
+\usage{
+  qflag(
+    loa,
+    nstat,
+    threshold = "0.05",
+    allow.confounded = FALSE
+  )
+}
 
 \arguments{
   \item{loa}{a Q-sort factor loading matrix obtained, for example from\cr \code{unclass(\link[psych]{principal}(...)$loadings)}, or from \code{\link{qmethod}(...)$loa}.}
@@ -12,6 +19,7 @@
     \enumerate{
       \item{\code{"0.05"} (default) for Q-sorts which factor loading is higher than the threshold for p-value < 0.05, as per van Exel et al (2001: 388)}
       \item{\code{"0.01"} for Q-sorts which factor loading is higher than the threshold for p-value < 0.01}
+      \item{\code{"none"} in which case all Q-sorts will be preliminarily flagged on all factors, but confounded Q-sorts may still be disallowed as per \code{allow.confounded}.}
     }
   }
   \item{allow.confounded}{
@@ -19,6 +27,12 @@
     Defaults to \code{FALSE}, in which case for confounded Q-sorts flagged for \emph{more than one factor}, only the factor with the highest square loading for that Q-sort will be flagged, as per van Exel et al (2001: 388).
     If \code{TRUE}, confounded Q-sorts will be allowed.
   }
+}
+
+\note{
+  To disable all flagging, run with \code{threshold = "none"} and \code{allow.confounded = TRUE}.
+
+  See package \href{https://github.com/aiorazabala/qmethod/wiki/Advanced-analysis}{wiki} for manual flagging.
 }
 
 \value{

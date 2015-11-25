@@ -12,6 +12,8 @@
     cor.method = "pearson",
     reorder = FALSE,
     quietly = FALSE,
+    threshold = "0.05",
+    allow.confounded = FALSE,
     ...
   )
 }
@@ -35,6 +37,8 @@
   Logical, indicating whether the printed summary \code{"info"} (see below) should be suppressed.
   Defaults to \code{FALSE}.
 }
+\item{threshold}{Argument passed to \code{\link{qflag}}}
+\item{allow.confounded}{Argument passed to \code{\link{qflag}}}
 \item{...}{other parameters to pass to functions such as \code{\link[psych]{principal}}}
 }
 
