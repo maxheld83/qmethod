@@ -71,6 +71,7 @@ q.scoreplot.ord <- function(results, factor, extreme.labels = c("negative", "pos
   # we want to know the distros for all subplots in advance, so we can scale all plots similarly (ylim especially in the below)
   distros <- apply(X = results$zsc_n, MARGIN = 2, FUN = count)  # gather the distribution for all
   distros <- join_all(dfs = distros, by = "x")  # join 'em
+  distros[is.na(distros)] <- 0  # protect against NAs for free distributions, we really don't mean NA but we mean 0
   rownames(distros) <- distros[,1]  # name 'em
   distros <- distros[,-1]  # simplify them
   colnames(distros) <- names(factors)
@@ -148,6 +149,7 @@ q.scoreplot.ord <- function(results, factor, extreme.labels = c("negative", "pos
   array.viz.data$item.sd[is.na(array.viz.data$item.sd)] <- 0  # set SDs to 0 if they are NA, which appropriately happens when only 1 person loads, since sd for n=1 is undefined. Bit of a hack job, but should not be much needed in real life, as factors with only 1 loader are crap anyway.
   array.viz.data$item.wrapped <- wrapped.handles[c(row.names(array.viz.data))]
   array.viz.data <- array.viz.data[order(array.viz.data[,"fsc"],array.viz.data[,"item.sd"]),]  # ordering, needed for y variable
+  array.viz.data
   array.viz.data$ycoord <- sequence(distros[, current.fac])  # add meaningless y variable for plotting
 
   # actual plotting ==========================================================
