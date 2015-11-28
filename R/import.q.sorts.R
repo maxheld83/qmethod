@@ -15,36 +15,36 @@ import.q.sorts <- function(q.sorts.dir, q.set, q.distribution=NULL, conditions=N
   assert_that(is.logical(header))
 
   # Deal with no conditions
-  if (is.null(conditions)) {
-    conditions <- "only.one"
+  if (!is.null(conditions)) {
+    conditions <- factor(conditions) #  such as before, after as factors
   }
-  conditions <- factor(conditions) #  such as before, after as factors
 
   # Gather participants p.set ==========================================
   p.set <- NULL  # must first exist for later appending
-  for (cond in conditions) {  # gather *all* participants for all conds
-    q.sorts.dir <- normalizePath(q.sorts.dir, mustWork = FALSE)  # normalize path for platform
-    if (!is.null(conditions)) {  # test conditions subdir only if there are conditions
-      for (cond in conditions) {
-        is.dir(paste(q.sorts.dir, cond, sep="/"))
-        # TODO more informative error message would be nice at some point
-      }
-    }
-    p.set.cond <- list.files(  # gather people by listing files
-      path = if (cond == "only.one"){  # if no conditions
-        q.sorts.dir  # this is the path
-      } else {  # if more conditions
-        paste (  # here comes the path
-          q.sorts.dir,
-          cond,  # consider condition in path
-          sep = "/"
-        )
-      },
+  q.sorts.dir <- normalizePath(q.sorts.dir, mustWork = FALSE)  # normalize path for platform
+  if (is.null(conditions)) {
+    is.dir(q.sorts.dir)  # does this exist
+    p.set <- list.files(  # gather people by listing files
+      path = q.sorts.dir,
       no.. = TRUE,  # no dotfiles
       pattern = "\\.csv$"  # only csv
     )
+    p.set <- file_path_sans_ext(p.set) #  kill extensions
+  } else {  # this is for conditions
+    for (cond in conditions) {  # gather *all* participants for all conds
+      p.set.cond <- NULL  # cleanup
+      p.set.cond <- list.files(  # gather people by listing files
+        path = paste(  # here comes the path
+          q.sorts.dir,
+          cond,  # consider condition in path
+          sep = "/"
+        ),
+        no.. = TRUE,  # no dotfiles
+        pattern = "\\.csv$"  # only csv
+      )
     p.set.cond <- file_path_sans_ext(p.set.cond) #  kill extensions
     p.set <- append(p.set, p.set.cond) # append vector
+    }
   }
   p.set <- unique(p.set)  # make participants unique, also for no-cond (just in case)
 
@@ -56,6 +56,9 @@ import.q.sorts <- function(q.sorts.dir, q.set, q.distribution=NULL, conditions=N
   }
 
   # Set up empty array =========================================================
+  if(is.null(conditions)) {
+    conditions <- "only.one"
+  }
   q.sorts <- array(
     #  participants, conditions, items makes 3 dimensions, all of which integer
     data = , #  no such thing yet, so all NAs (that should be the baseline!)
