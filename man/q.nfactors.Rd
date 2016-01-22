@@ -11,7 +11,8 @@
     cutoff = NULL,
     siglevel = 0.05,
     quietly = FALSE,
-    cor.method = "pearson"
+    cor.method = "pearson",
+    iterations = 0
   )
 }
 
@@ -44,6 +45,10 @@
   \item{cor.method}{
     If \code{q.matrix} is unspecified (\code{NULL}), character string indicating which correlation coefficient is to be computed, to be passed on to the function \code{\link[stats]{cor}}: \code{"pearson"} (default), \code{"kendall"}, or \code{"spearman"}.
     Should be the same as the one later used in \code{\link{qmethod}}.
+  }
+  \item{iterations}{
+    Number of iterations for parallel analysis, passed on to \code{\link[paran]{paran}}.
+    Defaults to \code{NULL}, in which case \code{\link[paran]{paran}}'s defaults are used.
   }
 }
 

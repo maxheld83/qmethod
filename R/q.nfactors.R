@@ -1,4 +1,11 @@
-q.nfactors <- function(dataset, q.matrix = NULL, cutoff = NULL, siglevel = 0.05, quietly = FALSE, cor.method="pearson") {
+q.nfactors <- function(dataset, q.matrix = NULL, cutoff = NULL, siglevel = 0.05, quietly = FALSE, cor.method="pearson", iterations = 0) {
+  # dataset <- job$raw$xls
+  # q.matrix <- NULL
+  # cutoff <- 8
+  # siglevel <- 0.05
+  # quietly <- FALSE
+  # cor.method <- "pearson"
+  # iterations <- 10
   # Input verification
   if (!is.logical(quietly) || !is.vector(quietly) || length(quietly) != 1) {
     stop("The argument set for quietly must be a logical vector of length 1.")
@@ -53,7 +60,7 @@ q.nfactors <- function(dataset, q.matrix = NULL, cutoff = NULL, siglevel = 0.05,
   howmany <- NULL  # set up empty results object
   # Parallel analysis (includes eigenvalues) ===
   q.paran <- paran(mat = q.matrix,
-    iterations = 10000,
+    iterations = iterations,
     quietly = TRUE,
     status = TRUE,
     all = FALSE,
@@ -89,8 +96,8 @@ q.nfactors <- function(dataset, q.matrix = NULL, cutoff = NULL, siglevel = 0.05,
   # Thresholds layer
   # This is a bit cumbersome, because we need this for later geom_line(), because of this bug/shortcoming in ggplot2: https://github.com/aiorazabala/qmethod/issues/157
   Brown1980 <- data.frame(Threshold = rep(x = "Magic Number Seven", 2), PC = rep(x = q.simple["Magic Number Seven"], 2), y = c(0, max(q.paran.long$Eigenvalue)))
-  WattsStenner2012 <- data.frame(Threshold = rep(x = "6-8 Q-Sorts per Factor"), PC = rep(x = q.simple["6-8 People per Factor"], 2), y = c(0, max(q.paran.long$Eigenvalue)))
-  KaiserGuttman <- data.frame(Threshold = rep(x = "Eigenvalue > 1", 2), PC = c(1, max(q.paran.long$PC)), y = rep(x = 1, 2))
+  WattsStenner2012 <- data.frame(Threshold = rep(x = "6-8 Q-Sorts per Factor"), PC = rep(x = min(q.simple["6-8 People per Factor"], cutoff), 2), y = c(0, max(q.paran.long$Eigenvalue)))
+  KaiserGuttman <- data.frame(Threshold = rep(x = "Eigenvalue > 1", 2), PC = c(1, min(as.vector(max(q.paran.long$PC)), cutoff)), y = rep(x = 1, 2))
   thresholds <- rbind(Brown1980, WattsStenner2012, KaiserGuttman)  # combine criteria
   g <- g + geom_line(data = thresholds, mapping = aes(x = PC, y = y, colour = Threshold))  # plot thresholds as lines (awkward hack job because of above bug in ggplot)
   g <- g + scale_colour_manual(values = c("Eigenvalue > 1" = "red", "Magic Number Seven" = "blue", "6-8 Q-Sorts per Factor" = "green"))  # fix colors
@@ -115,7 +122,11 @@ q.nfactors <- function(dataset, q.matrix = NULL, cutoff = NULL, siglevel = 0.05,
 
 
   # Bartlett's (et al.) test ===
-  q.Bartlett <- nBartlett(x = q.matrix, N = nrow(dataset), alpha = siglevel, cor = TRUE, details = TRUE, correction = TRUE)  # this is Bartlett 1950
+  q.Bartlett <- NULL  # in case below fails, which seems to happen when more vars than cases
+  try(
+    expr = q.Bartlett <- nBartlett(x = q.matrix, N = nrow(dataset), alpha = siglevel, cor = TRUE, details = TRUE, correction = TRUE),  # this is Bartlett 1950
+    silent = TRUE
+  )
   howmany$Bartlett <- q.Bartlett
 
   # Communalities plot ===
@@ -136,7 +147,7 @@ q.nfactors <- function(dataset, q.matrix = NULL, cutoff = NULL, siglevel = 0.05,
 
   # thresholds layer
   # p <- p + geom_vline(xintercept = q.Bartlett$nFactors[1], linetype = "dashed", show_guide = FALSE) something along these lines would be better, but won't work for now -> https://github.com/aiorazabala/qmethod/issues/220
-  thresholds <- data.frame(Threshold = "Bartlett (1950, 1951)", PC = q.Bartlett$nFactors[1], ymin = 0, ymax = 1)  # ymin/max must always be 0-1 for communalities
+  thresholds <- data.frame(Threshold = "Bartlett (1950, 1951)", PC = 5, ymin = 0, ymax = 1)  # ymin/max must always be 0-1 for communalities
   p <- p + geom_linerange(data = thresholds, mapping = aes(x = PC, ymin = ymin, ymax = ymax, linetype = Threshold))
   # write out result
   howmany$commplot <- p
@@ -150,8 +161,11 @@ q.nfactors <- function(dataset, q.matrix = NULL, cutoff = NULL, siglevel = 0.05,
     stringsAsFactors = FALSE
   )
   summary <- rbind(summary, list("Parallel Analysis", q.paran$Retained, "Horn (1965)"))
-  summary <- rbind(summary, list("No Identity Matrix", howmany$Bartlett$nFactors[1], "Bartlett (1950, 1951)"))
-  row.names(summary)[4:5] <- c("Paran", "Bartlett")
+  row.names(summary)[4] <- c("Paran")
+  if (!is.null(howmany$Bartlett)) {
+    summary <- rbind(summary, list("No Identity Matrix", howmany$Bartlett$nFactors[1], "Bartlett (1950, 1951)"))
+    row.names(summary)[5] <- c("Bartlett")
+  }
   howmany$summary <- summary  # save output
 
   # Simple correlation matrix
