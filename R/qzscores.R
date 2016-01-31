@@ -1,12 +1,12 @@
 #calculates final z-scores and factor scores, and extracts main results for Q method
-qzscores <- function(dataset, nfactors, loa, flagged, forced = TRUE, distribution = NULL) {
+qzscores <- function(dataset, nfactors, loa, flagged, forced = TRUE, distribution = NULL, scoremethod = "Brown1980") {
   # calculate number of Q sorts and number of statements
   nstat <- nrow(dataset)
   nqsorts <- ncol(dataset)
   #A. select FLAGGED Q sorts
   floa <- flagged*loa #as.data.frame(loa); floa[which(!flagged, arr.ind=T)] <- 0 # the latter does not work in old versions of R
   #B.-C. Factor weights, now separated in qfwe()
-  wraw_all <- qfwe(dataset = dataset, loa = loa, flagged = flagged)
+  wraw_all <- qfwe(dataset = dataset, loa = loa, flagged = flagged, scoremethod = scoremethod)
   #-- sums, average and stdev for each statement
   zsc_sum <- data.frame(cbind(1:nstat))
   zsc_mea <- data.frame(cbind(1:nstat))
