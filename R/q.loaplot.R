@@ -4,9 +4,11 @@ q.loaplot <- function(results, quietly = FALSE, names = TRUE, points = FALSE, al
   if (!is.logical(quietly) || !is.vector(quietly) || length(quietly) != 1) {
     stop("The argument set for quietly must be a logical vector of length 1.")
   }
-  if (class(results) != "QmethodRes") {  # only accept results object
-    stop("The object provided is not of class 'QmethodRes'.")
+  if (class(results) != "QmethodRes") {  # then it must be loas
+    #stop("The object provided is not of class 'QmethodRes'.")
+    results$loas <- results
   }
+  #TODO add test for loas
 
   # Preliminaries
   loaplots <- combs.plots <- NULL

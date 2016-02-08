@@ -17,7 +17,7 @@
 }
 \arguments{
   \item{results}{
-    A results object from \code{\link{qmethod}}.
+    A results object from \code{\link{qmethod}} or a loadings table.
   }
   \item{quietly}{
     Logical, indicating whether a summary plot should be printed.
