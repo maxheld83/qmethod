@@ -23,6 +23,7 @@ qflag <- function(loa = loa, nstat, threshold = "0.05", allow.confounded = FALSE
     "0.01" = 2.58/sqrt(nstat)
   )
   if (threshold == "none") {
+    flagged <- loa  # read in structure first
     flagged[ , ] <- TRUE  # assign all true, that's what no flagging is
   } else {
     flagged <- abs(loa) > thold
