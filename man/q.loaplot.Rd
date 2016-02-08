@@ -5,7 +5,15 @@
   Plots the loadings of Q-sorts on all factors against all factors.
 }
 \usage{
-  q.loaplot(results, quietly = FALSE)
+  q.loaplot(
+    results,
+    quietly = FALSE,
+    names = TRUE,
+    points = FALSE,
+    alpha = 1,
+    density = FALSE,
+    grid = TRUE
+  )
 }
 \arguments{
   \item{results}{
@@ -14,6 +22,29 @@
   \item{quietly}{
     Logical, indicating whether a summary plot should be printed.
     Defaults to \code{FALSE}.
+  }
+  \item{names}{
+    Logical, indicating whether rownames (of Q-sorts) from the loadings table should be printed.
+    Should be set to \code{FALSE} when there are very many Q-sorts, or when there are no meaningful names.
+    Defaults to \code{TRUE}.
+  }
+  \item{points}{
+    Logical, indicating whether a point should be plotted at the precise location of a Q-sort.
+    Defaults to \code{FALSE}.
+  }
+  \item{alpha}{
+    Numerical vector of length one between 0 and 1, indicating transparency of points.
+    Set to below 1 to avoid overplotting.
+    Defaults to \code{1}, in which case points are not transparent.
+  }
+  \item{density}{
+    Logical, indicating whether a 2-d density estimate should be added.
+    Helpful for very many Q-sorts with much overplotting.
+    Defaults to \code{FALSE}.
+  }
+  \item{grid}{
+    Logical, indicating whether the \emph{combinations} of plots should be returned as a grid or individually, when \code{quietly = FALSE}.
+    Defaults to \code{TRUE}.
   }
 }
 \details{
