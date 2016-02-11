@@ -6,35 +6,49 @@ Authors@R: c(person(given="Aiora", family="Zabala", comment="Main author", email
              person(given="Maximilian", family="Held", comment="Author of additional data management and visualization functions", email="maximilian.held83@gmail.com", role=c("aut")),
              person(given="Verena", family="Kasztantowicz", comment="Contributor for image-based Q sort cards", email="verenakasztantowicz@gmail.com", role=c("ctb"))
             )
-Description: Analysis of Q methodology, used to identify distinct perspectives existing within a group. This methodology is used across social, health and environmental sciences to understand diversity of attitudes, discourses, or decision-making styles (for more information, see http://qmethod.org).
-  A single function runs the full analysis. Each step can be run separately using the corresponding functions: for automatic flagging of Q-sorts (manual flagging is optional), for statement scores, for distinguishing and consensus statements, and for general characteristics of the factors.
-  Additional functions are available to import and export data, to print and plot, to import raw data from individual *.CSV files, and to make printable cards.
-  The package uses principal components and it allows manual or automatic flagging, a number of mathematical methods for rotation, and a number of correlation coefficients for the initial correlation matrix.
-  See further details in the package documentation, and in the web pages below, which include a cookbook, guidelines for more advanced analysis (how to perform manual flagging or change the sign of factors), data management, and a beta graphical user interface for online and offline use.
+Description: Analysis of Q methodology, used to identify distinct perspectives
+    existing within a group. This methodology is used across social, health and
+    environmental sciences to understand diversity of attitudes, discourses, or
+    decision-making styles (for more information, see http://qmethod.org). A single
+    function runs the full analysis. Each step can be run separately using the
+    corresponding functions: for automatic flagging of Q-sorts (manual flagging is
+    optional), for statement scores, for distinguishing and consensus statements,
+    and for general characteristics of the factors. Additional functions are
+    available to import and export data, to print and plot, to import raw data from
+    individual *.CSV files, and to make printable cards. The package uses principal
+    components and it allows manual or automatic flagging, a number of mathematical
+    methods for rotation, and a number of correlation coefficients for the initial
+    correlation matrix. See further details in the package documentation, and in the
+    web pages below, which include a cookbook, guidelines for more advanced analysis
+    (how to perform manual flagging or change the sign of factors), data management,
+    and a beta graphical user interface for online and offline use.
 License: GPL (>= 2)
 Imports:
-  ggplot2,
-  psych,
-  methods,
-  GPArotation,
-  tools,
-  digest,
-  knitr,
-  xtable,
-  reshape2,
-  RColorBrewer,
-  stringr,
-  plyr,
-  paran,
-  nFactors,
-  grid,
-  gridExtra,
-  koRpus,
-  devtools,
-  assertthat,
-  tikzDevice
+    ggplot2,
+    psych,
+    methods,
+    GPArotation,
+    tools,
+    digest,
+    knitr,
+    xtable,
+    reshape2,
+    RColorBrewer,
+    stringr,
+    plyr,
+    paran,
+    nFactors,
+    grid,
+    gridExtra,
+    koRpus,
+    devtools,
+    assertthat,
+    tikzDevice
 LazyData: true
 Repository: CRAN
-URL: https://github.com/aiorazabala/qmethod, https://github.com/aiorazabala/qmethod/wiki
+URL: https://github.com/aiorazabala/qmethod, https://github.com/aiorazabala/
+    qmethod/wiki
 BugReports: https://github.com/aiorazabala/qmethod/issues
-Suggests: testthat
+Suggests:
+    testthat
+RoxygenNote: 5.0.1
