@@ -72,7 +72,7 @@ q.scoreplot.ord <- function(results, factor, extreme.labels = c("negative", "pos
   distros <- apply(X = results$zsc_n, MARGIN = 2, FUN = count)  # gather the distribution for all
   distros <- join_all(dfs = distros, by = "x")  # join 'em
   rownames(distros) <- distros[,1]  # name 'em
-  distros <- distros[,-1]  # simplify them
+  distros <- distros[,-1, drop = FALSE]  # simplify them
   colnames(distros) <- names(factors)
 
   # Calculate some stuff for text size scaling =================================
