@@ -16,6 +16,9 @@ qflag <- function(loa = loa, nstat, threshold = "0.05", allow.confounded = FALSE
   # calculate number of Q sorts and number of statements
   nqsorts <- nrow(loa)
 
+  # set up empty flagged df
+  flagged <- loa
+
   # implementing threshold
   thold <- switch(EXPR = threshold,
     "none" = NA,  # NA makes sense because NA is also logical
