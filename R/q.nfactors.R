@@ -1,4 +1,4 @@
-q.nfactors <- function(dataset, q.matrix = NULL, cutoff = NULL, siglevel = 0.05, quietly = FALSE, cor.method="pearson") {
+q.nfactors <- function(dataset, q.matrix = NULL, cutoff = NULL, siglevel = 0.05, quietly = FALSE, cor.method="pearson", iterations = 1000) {
   # Input verification
   if (!is.logical(quietly) || !is.vector(quietly) || length(quietly) != 1) {
     stop("The argument set for quietly must be a logical vector of length 1.")
@@ -53,7 +53,7 @@ q.nfactors <- function(dataset, q.matrix = NULL, cutoff = NULL, siglevel = 0.05,
   howmany <- NULL  # set up empty results object
   # Parallel analysis (includes eigenvalues) ===
   q.paran <- paran(mat = q.matrix,
-    iterations = 10000,
+    iterations = iterations,
     quietly = TRUE,
     status = TRUE,
     all = FALSE,
