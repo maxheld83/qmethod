@@ -10,6 +10,9 @@ qfwe <- function(dataset, loa, flagged, scoremethod = "Brown1980") {
     }
   ))
 
+  if (scoremethod == "none") {
+    dataset <- scale(x = dataset, center = TRUE)
+  }
   #C. calculate Z-SCORES for each sentence and factor
   #-- new matrix for wsubm*ssubmn (original matrix * q sort factor weight), and transpose
   wraw_all <- list()

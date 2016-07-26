@@ -1,4 +1,4 @@
-q.nfactors <- function(dataset, q.matrix = NULL, cutoff = NULL, siglevel = 0.05, quietly = FALSE, cor.method="pearson", iterations = 0) {
+q.nfactors <- function(dataset, q.matrix = NULL, cutoff = NULL, siglevel = 0.05, quietly = FALSE, cor.method="pearson", iterations = 10) {
   # dataset <- job$raw$xls
   # q.matrix <- NULL
   # cutoff <- 8

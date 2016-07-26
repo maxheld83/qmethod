@@ -11,3 +11,5 @@ inst/cardtemplates/AveryZweckformC32010.pdf
 inst/cardtemplates/AveryZweckformC32010.synctex.gz
 inst/cardtemplates/AveryZweckformC32010.tex
 .RData
+
+*.RData
