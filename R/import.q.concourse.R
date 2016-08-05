@@ -55,6 +55,7 @@ import.q.concourse <- function(q.concourse.dir, languages=NULL) {
         path <- normalizePath(path, mustWork = FALSE)  # just to be sure
         if (file.exists(path)) {  # if translation exists, read in
           q.concourse[handle,lang] <- readChar(path, file.info(path)$size) # assign the full text
+          q.concourse[handle,lang] <- enc2utf8(q.concourse[handle,lang])
         } else {  # error out if there is a missing translation
           stop(paste("There is no", lang, "version for", handle, "."))
         }
