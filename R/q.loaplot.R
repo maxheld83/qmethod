@@ -30,7 +30,8 @@ q.loaplot <- function(results,
                       red = TRUE,
                       #flaglines = FALSE,
                       #nstat,
-                      quietly = FALSE) {
+                      quietly = FALSE,
+                      maxvals = FALSE) {
 
   # Input verification =========================================================
   if (!is.logical(quietly) || !is.vector(quietly) || length(quietly) != 1) {
@@ -63,11 +64,15 @@ q.loaplot <- function(results,
       if (density) {
         g <- g + geom_density_2d()
       }
-      g <- g + xlim(-1,1) + ylim(-1,1)  # factor loadings always range from -1 to 1, make sure that plots are comparable
       g <- g + coord_fixed()  # distortions of axes are bad and nonsensical
       g <- g + geom_rug(alpha = 0.1)
-      maxvals <- max(results$loa)
-      g <- g + xlim(-maxvals, maxvals) + ylim(-maxvals, maxvals)
+      if (maxvals) {
+        maxvals <- max(results$loa)
+        g <- g + xlim(-maxvals, maxvals) + ylim(-maxvals, maxvals)
+      } else {
+        g <- g + xlim(-1,1) + ylim(-1,1)  # factor loadings always range from -1 to 1, make sure that plots are comparable
+      }
+
       if (!is.null(results$brief$fcolors)) {  # if factors have colors
         g <- g + theme(axis.text.x = element_text(colour = results$brief$fcolors[which(colnames(results$loa) == v)]))
         g <- g + theme(axis.text.y = element_text(colour = results$brief$fcolors[which(colnames(results$loa) == h)]))
