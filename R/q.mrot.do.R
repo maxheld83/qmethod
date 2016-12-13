@@ -60,7 +60,7 @@ q.mrot.do <- function(results, rot.mat, quietly = FALSE) {  # this function simp
     loa.rot <- as.data.frame(loa.rot)
     names(loa.rot) <- names(results$loa)  # this is taking the OLD names again, for now
 
-    flags.rot <- qflag(loa = loa.rot, nstat = nrow(results$dataset))
+    flags.rot <- qflag(loa = loa.rot, nstat = nrow(results$dataset), threshold = "none", allow.confounded = TRUE)
     # TODO(maxheld83) use other flagging method here -> https://github.com/aiorazabala/qmethod/issues/167
 
     results.rot <- qzscores(dataset = results$dataset, nfactors = results$brief$nfactors, forced = results$brief$distro, flagged = flags.rot, loa = loa.rot)
