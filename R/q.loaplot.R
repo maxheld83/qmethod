@@ -82,7 +82,6 @@ q.loaplot <- function(results,
       }
     }
   }
-
   # if always in existence, this stuff *COULD* be read in from the rotations.angle in brief, would avoid duplication and decrease risk of inconsistency
   combs <- combn(x = colnames(results$loa), m = 2, simplify = FALSE)
   for (c in combs) {

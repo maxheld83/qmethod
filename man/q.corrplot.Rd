@@ -5,7 +5,7 @@
 	Produces a heatmap from a given correlation matrix.
 }
 \usage{
-	q.corrplot(corr.matrix, quietly = FALSE)
+	q.corrplot(corr.matrix)
 }
 \arguments{
   \item{corr.matrix}{
