@@ -24,7 +24,7 @@ import.q.sorts <- function(q.sorts.dir, q.set, q.distribution=NULL, conditions=N
   p.set <- NULL  # must first exist for later appending
   for (cond in conditions) {  # gather *all* participants for all conds
     q.sorts.dir <- normalizePath(q.sorts.dir, mustWork = FALSE)  # normalize path for platform
-    if (!is.null(conditions)) {  # test conditions subdir only if there are conditions
+    if (conditions != "only.one") {  # test conditions subdir only if there are conditions
       for (cond in conditions) {
         is.dir(paste(q.sorts.dir, cond, sep="/"))
         # TODO more informative error message would be nice at some point
@@ -133,6 +133,7 @@ import.q.sorts <- function(q.sorts.dir, q.set, q.distribution=NULL, conditions=N
 			    )
 			  }
 			  current.sort <- as.matrix(current.sort) #  because read.csv makes dataframe
+			  current.sort <- trimws(x = current.sort, which = "both")  # this protects against trailing and leading whitespaces
         for (id in na.omit(as.vector(current.sort))) {# loops over ids
           if (id %in% lookup.table) {  # do we know the id in the current sort?
             row <- which(lookup.table == id, arr.ind=TRUE)[,1]  # where is it in the table?
