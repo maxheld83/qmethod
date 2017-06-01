@@ -47,7 +47,13 @@ qdc <- function(dataset, nfactors, zsc, sed) {
         varsout <- names(qdc2)[-grep(i, names(qdc2))]
         varsout <- varsout[-which(varsout=="dist.and.cons")]
         for (s in 1:nrow(qdc2)) {
-          if (sum(qdc2[s, varsin] != "") == length(varsin) & sum(qdc2[s, varsout] != "") == 0) qdc2[s, "dist.and.cons"] <- paste0("Distinguishes f",i, " only") else if (sum(qdc2[s, c(varsin, varsout)] != "") == length(qdc1)) qdc2[s, "dist.and.cons"] <- "Distinguishes all" else if (sum(qdc2[s, varsin] != "") == length(varsin) & sum(qdc2[s, varsout] != "") != 0 & sum(qdc2[s, c(varsin, varsout)] != "") != length(qdc1)) qdc2[s, "dist.and.cons"] <- paste0(qdc2[s, "dist.and.cons"], "Distinguishes f",i, " ", collapse="")
+          if (sum(qdc2[s, varsin] != "", na.rm = TRUE) == length(varsin) & sum(qdc2[s, varsout] != "", na.rm = TRUE) == 0) {
+            qdc2[s, "dist.and.cons"] <- paste0("Distinguishes f",i, " only")
+          } else if (sum(qdc2[s, c(varsin, varsout)] != "", na.rm = TRUE) == length(qdc1)) {
+            qdc2[s, "dist.and.cons"] <- "Distinguishes all"
+          } else if (sum(qdc2[s, varsin] != "", na.rm = TRUE) == length(varsin) & sum(qdc2[s, varsout] != "", na.rm = TRUE) != 0 & sum(qdc2[s, c(varsin, varsout)] != "", na.rm = TRUE) != length(qdc1)) {
+            qdc2[s, "dist.and.cons"] <- paste0(qdc2[s, "dist.and.cons"], "Distinguishes f",i, " ", collapse= "")
+          }
         }
         #The above loop assigns these values in the column dist.and.cons, according to the following rules:
         # -- "Distinguishes f* only" when the differences of f* with all other factors are significant, AND all other differences are not.

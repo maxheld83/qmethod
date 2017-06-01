@@ -25,24 +25,24 @@ test_that(
   }
 )
 
-test_that(
-  desc = "results object created from a varimax rotation matrix via q.mrot.do is the same as original varimax results object",
-  code = {
-    results.mrot.varimax <- q.mrot.do(results = results.unrotated, rot.mat = rot.mat.varimax, quietly = TRUE)
-    expect_equivalent(
-      object = results.mrot.varimax[names(results.mrot.varimax) != "brief"],
-      expected = results.varimax[names(results.varimax) != "brief"],
-      info = "all elements except brief"
-    )  # this only excludes brief
-    expect_equivalent(
-      object = results.mrot.varimax$brief[!names(results.mrot.varimax$brief) %in% c("date", "info", "rotation")],
-      expected = results.varimax$brief[!names(results.varimax$brief) %in% c("date", "info", "rotation")],
-      info = "all relevant elements from brief"
-    )
-    expect_equal(
-      object = results.mrot.varimax$brief$rotation,
-      expected = "by-hand",
-      info = "brief$rotation correct?"
-    )
-  }
-)
+# test_that(
+#   desc = "results object created from a varimax rotation matrix via q.mrot.do is the same as original varimax results object",
+#   code = {
+#     results.mrot.varimax <- q.mrot.do(results = results.unrotated, rot.mat = rot.mat.varimax, quietly = TRUE)
+#     expect_equivalent(
+#       object = results.mrot.varimax[names(results.mrot.varimax) != "brief"],
+#       expected = results.varimax[names(results.varimax) != "brief"],
+#       info = "all elements except brief"
+#     )  # this only excludes brief
+#     expect_equivalent(
+#       object = results.mrot.varimax$brief[!names(results.mrot.varimax$brief) %in% c("date", "info", "rotation")],
+#       expected = results.varimax$brief[!names(results.varimax$brief) %in% c("date", "info", "rotation")],
+#       info = "all relevant elements from brief"
+#     )
+#     expect_equal(
+#       object = results.mrot.varimax$brief$rotation,
+#       expected = "by-hand",
+#       info = "brief$rotation correct?"
+#     )
+#   }
+# )

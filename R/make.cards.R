@@ -120,7 +120,7 @@ make.cards <- function(
       q.set.print[handle,"id"] <- lookup.table[handle, study.language]
     }
   }
-  q.set.print$id <- unlist(lapply(X = q.set.print$id, FUN = "sanitizeTexString"))
+  # q.set.print$id <- unlist(lapply(X = q.set.print$id, FUN = "sanitizeTexString"))
   # the above makes sure that handle does not include active latex commands
   #    notice that we DO want latex commands in other columns, so this must be done here "by-hand" and can't be done for all columns via xtable etc.
   path <- paste(  # assign path to template

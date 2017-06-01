@@ -27,7 +27,7 @@ importFrom("gridExtra", "grid.arrange")
 importFrom("gridExtra", "arrangeGrob")
 importFrom("devtools", "install_version")
 importFrom("devtools", "dev_mode")
-importFrom("tikzDevice", "sanitizeTexString")
+# importFrom("tikzDevice", "sanitizeTexString")
 export("qmethod",
        "qzscores",
        "qflag",

@@ -5,41 +5,17 @@
 \title{Q methodology: create Q factor loadings plot}
 \usage{
 q.loaplot(results, names = TRUE, points = FALSE, alpha = 1,
-  density = FALSE, grid = TRUE, quietly = FALSE)
+  density = FALSE, grid = TRUE, rug = FALSE, red = TRUE,
+  quietly = FALSE, maxvals = FALSE)
 }
 \arguments{
 \item{results}{A results object from \code{\link{qmethod}} or a loadings table.}
-
-\item{names}{Logical, indicating whether rownames (of Q-sorts) from the loadings table should be printed.
-Should be set to \code{FALSE} when there are very many Q-sorts, or when there are no meaningful names.}
-
-\item{points}{Logical, indicating whether a point should be plotted at the precise location of a Q-sort.
-Defaults to \code{FALSE}.
-Defaults to \code{TRUE}.}
-
-\item{alpha}{Numerical vector of length one between 0 and 1, indicating transparency of points.
-Set to below 1 to avoid overplotting.
-Defaults to \code{1}, in which case points are not transparent.}
-
-\item{density}{Logical, indicating whether a 2-d density estimate should be added.
-Helpful for very many Q-sorts with much overplotting.
-Defaults to \code{FALSE}.}
-
-\item{grid}{Logical, indicating whether the \emph{combinations} of plots should be returned as a grid or individually, when \code{quietly = FALSE}.
-Defaults to \code{TRUE}.}
-
-\item{quietly}{Logical, indicating whether a summary plot should be printed.
-Defaults to \code{FALSE}.}
 }
 \value{
 Returns a list of lists of \pkg{ggplot2} objects, one for each pair of extracted factors.
 }
 \description{
 Plots the loadings of Q-sorts on all factors against all factors.
-}
-\details{
-During rotation procedures and final interpretation in Q methodology, researchers need to inspect the loadings of participant Q-sorts (as people-variables) on the extracted factors.
-Instead of a tabular view, this function creates a simple plot.
 }
 \note{
 The returned object includes all possible \emph{permutations} of factor pairs.
@@ -60,4 +36,3 @@ loaplots$f1$f2  # retrieves loaplot of f1 vs f2
 \author{
 Maximilian Held
 }
-
