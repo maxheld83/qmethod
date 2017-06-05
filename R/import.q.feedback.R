@@ -75,9 +75,13 @@ import.q.feedback <- function(q.feedback.dir, q.sorts, q.set, manual.lookup=NULL
 				  if (any(lookup.table == id)) {  # do we know the id in the current feedback?
 				    row <- which(lookup.table == id, arr.ind=TRUE)[,1]  # where is it in the table?
 				    handle <- rownames(lookup.table)[row]  # what is the short handle?
-				    row.names(current.feedback[id,]) <- handle  # reassign it
             # Gathering data into array
-				    q.feedback[handle,part,cond] <- current.feedback[id,1]
+				    if (cond == "only.one") {
+				      q.feedback[handle,part] <- current.feedback[id,1]
+				    } else {
+				      q.feedback[handle,part,cond] <- current.feedback[id,1]
+				    }
+
 				  } else {
 				    warning(
 				      paste(
@@ -94,9 +98,5 @@ import.q.feedback <- function(q.feedback.dir, q.sorts, q.set, manual.lookup=NULL
 		  }
 		}
 	}
-  if (length(conditions)>1) {  # if more than one condition
-	  return(q.feedback)
-  } else {  # if only one condition
-    return(q.feedback[,,1])
-  }
+  return(q.feedback)
 }
